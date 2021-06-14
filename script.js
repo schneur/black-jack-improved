@@ -1,11 +1,20 @@
 var score = 0;
+var myAces = 0;
 
 var alertCard = function () {
-//if (this.points == 'Ace') {
-
-//}
+if (this.points == 'Ace') {
+ myAces += 1;
+ if (myAces == 1) {
+   if (score < 11) {
+     score += 11;
+  } else {
+     score += 1;
+    }
+ }
+} else {
   cardsUsed += this.count + this.suit;
   score += this.points;
+}
   alert('you drew a ' + this.count + this.suit);
 };
 
@@ -333,16 +342,51 @@ for (var i = cards.length -1; i > 0; i--) {
 var cardsUsed = [];
 var newCard = [];
 
-var newgame = function () {
+var newGame = function () {
   alert('welcome to Blackjack!\ntime to get started.');
+  newCard = cards.pop();
+  newCard.alertCard();
+  game();
 };
 
 var game = function () {
   newCard = cards.pop();
-  newCard.alertCard(); 
-  console.log(cardsUsed);
-  //addCards()
+  newCard.alertCard();
+  alert('your cards so far are' + '\n' + cardsUsed + '.\nwith a total of ' + score + ' points.');
+  determineWin();
 };
 
-game();
-game();
+var determineWin = function () {
+  if (score == 21) {
+    alert('you win!');
+    playAgain();
+  } else if (score > 21) {
+    alert('bust! \nbetter luck next time.');
+    playAgain();
+  } else {
+    var hitOrStand = prompt('your cards so far are ' + cardsUsed + ' with a total of ' + score + ' points.\nhit or stand?','type "hit" or "stand"');
+    if (hitOrStand === 'hit') {
+      game();
+    } else if (hitOrStand === 'stand') {
+      alert('oh man. you can always play again.');
+      playAgain();
+    } else {
+      alert('couldnt understand that, maybe check your spelling.');
+      determineWin();
+    }
+  };
+}
+
+var playAgain = function () {
+  var response = confirm('Do you want to play again?');
+    if (response) {
+       score = 0;
+       myAces = 0;
+       cardsUsed = [];
+      newGame();
+    } else {
+      alert('ok, be like that.');
+    }
+};
+
+newGame();
