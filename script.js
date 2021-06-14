@@ -5,16 +5,16 @@ var alertCard = function () {
 if (this.points == 'Ace') {
  myAces += 1;
  if (myAces == 1) {
-   if (score < 11) {
-     score += 11;
+    if (score < 11) {
+    score += 11;
   } else {
-     score += 1;
-    }
- }
+    score += 1;
+  }
+  }
 } else {
-  cardsUsed += this.count + this.suit;
   score += this.points;
 }
+  cardsUsed += this.count + this.suit;
   alert('you drew a ' + this.count + this.suit);
 };
 
@@ -332,25 +332,30 @@ cards = [
     alertCard: alertCard
   }];
 
-for (var i = cards.length -1; i > 0; i--) {
-  var j = Math.floor(Math.random() * i);
-  var k = cards[i];
-  cards[i] = cards[j];
-  cards[j] = k;
-};
+  var shuffle = function () {
+    for (var i = cards.length -1; i > 0; i--) {
+      var j = Math.floor(Math.random() * i);
+      var k = cards[i];
+      cards[i] = cards[j];
+      cards[j] = k;
+    };
+  }
 
 var cardsUsed = [];
 var newCard = [];
 
 var newGame = function () {
   alert('welcome to Blackjack!\ntime to get started.');
+  shuffle();
   newCard = cards.pop();
+  cards.unshift(newCard);
   newCard.alertCard();
   game();
 };
 
 var game = function () {
   newCard = cards.pop();
+  cards.unshift(newCard);
   newCard.alertCard();
   alert('your cards so far are' + '\n' + cardsUsed + '.\nwith a total of ' + score + ' points.');
   determineWin();
